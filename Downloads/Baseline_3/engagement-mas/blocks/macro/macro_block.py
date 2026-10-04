@@ -24,8 +24,13 @@ except Exception:
         except Exception:
             FaceMesh = None
 
-# Set deterministic flags globally
-torch.use_deterministic_algorithms(True)
+# Configure CuBLAS workspace and safe determinism for CUDA
+if "CUBLAS_WORKSPACE_CONFIG" not in os.environ:
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
+try:
+    torch.use_deterministic_algorithms(False)
+except Exception:
+    pass
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 np.random.seed(42)

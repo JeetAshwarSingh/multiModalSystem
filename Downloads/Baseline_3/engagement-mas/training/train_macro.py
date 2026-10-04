@@ -20,6 +20,12 @@ The script:
 
 import argparse
 import os
+import sys
+
+# Set cuBLAS deterministic workspace configuration before torch initializes CUDA
+if "CUBLAS_WORKSPACE_CONFIG" not in os.environ:
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
+
 import yaml
 import hashlib
 import numpy as np
@@ -120,7 +126,7 @@ class MacroLitModule(LightningModule):
         loss = 0.0
         logits_eng = self.head_engagement(feats)
         loss += float(self.hparams.get('loss_weights', {}).get('engagement', 1.0)) * self.loss_fn(logits_eng, labels[:, 0])
-        self.log('train_loss', loss, prog_bar=True)
+        self.log('train_loss', loss, prog_bar=True, batch_size=embedding.size(0))
         return loss
 
     def configure_optimizers(self):
@@ -166,7 +172,8 @@ def main():
                            root_dir=ds_cfg['root_dir'],
                            cache_dir=cache_dir,
                            device=dev)
-    loader = DataLoader(dataset, batch_size=cfg['batch_size'], shuffle=True, num_workers=2)
+    num_workers = int(cfg.get('num_workers', 2))
+    loader = DataLoader(dataset, batch_size=cfg['batch_size'], shuffle=True, num_workers=num_workers)
 
     cfg['device'] = dev
     lit_module = MacroLitModule(cfg)
@@ -176,7 +183,8 @@ def main():
                       default_root_dir=ckpt_dir,
                       callbacks=[checkpoint_cb],
                       accelerator=accel,
-                      devices=1 if accel in ["gpu", "mps"] else "auto")
+                      devices=1 if accel in ["gpu", "mps"] else "auto",
+                      deterministic=False)
     trainer.fit(lit_module, loader)
 
     final_path = os.path.join(ckpt_dir, 'last.pt')
