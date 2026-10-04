@@ -97,6 +97,8 @@ class MacroLitModule(LightningModule):
         lora_enabled = lora_cfg.get('enabled', False) if isinstance(lora_cfg, dict) else getattr(lora_cfg, 'enabled', False)
         lora_rank = lora_cfg.get('rank', 4) if isinstance(lora_cfg, dict) else getattr(lora_cfg, 'rank', 4)
         dev = self.hparams.get('device', 'cpu')
+        if dev == "auto" or dev == "cuda" or dev == "gpu":
+            dev = "cuda" if torch.cuda.is_available() else "cpu"
         
         self.block = MacroBlock(use_lora=lora_enabled, lora_rank=lora_rank, device=dev)
         self.transformer = self.block.transformer
@@ -166,6 +168,7 @@ def main():
                            device=dev)
     loader = DataLoader(dataset, batch_size=cfg['batch_size'], shuffle=True, num_workers=2)
 
+    cfg['device'] = dev
     lit_module = MacroLitModule(cfg)
 
     checkpoint_cb = ModelCheckpoint(dirpath=ckpt_dir, filename='best', monitor='train_loss', mode='min', save_top_k=1)
