@@ -1,0 +1,9 @@
+datasets:
+  daisee:
+    root_dir: "data/daisee"
+    train_csv: "data/daisee/train.csv"
+    val_csv: "data/daisee/val.csv"
+    test_csv: "data/daisee/test.csv"
+    test_quick_csv: "data/daisee/test_quick.csv"
+    label_columns: [Engagement, Boredom, Confusion, Frustration]
+    num_classes: 4

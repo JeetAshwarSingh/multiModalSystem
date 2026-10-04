@@ -1,0 +1,100 @@
+2026-10-03 01:22:42,717 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-03 01:22:42,718 INFO Result for clip 3, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:22:42,718 INFO Result for clip 3, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:22:42,729 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-03 01:22:42,729 INFO Result for clip 2, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:22:42,729 INFO Result for clip 2, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:22:43,802 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-03 01:22:43,802 INFO Result for clip 0, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:22:43,802 INFO Result for clip 0, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:22:43,827 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-03 01:22:43,827 INFO Result for clip 1, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:22:43,827 INFO Result for clip 1, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:02,989 INFO First result for clip 5 (modality macro) – window opened.
+2026-10-03 01:23:02,990 INFO Result for clip 5, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:02,990 INFO Result for clip 5, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:03,429 INFO First result for clip 4 (modality macro) – window opened.
+2026-10-03 01:23:03,429 INFO Result for clip 4, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:03,429 INFO Result for clip 4, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:04,804 INFO First result for clip 7 (modality macro) – window opened.
+2026-10-03 01:23:04,804 INFO Result for clip 7, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:04,804 INFO Result for clip 7, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:04,933 INFO First result for clip 6 (modality macro) – window opened.
+2026-10-03 01:23:04,934 INFO Result for clip 6, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:04,934 INFO Result for clip 6, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:22,385 INFO First result for clip 8 (modality macro) – window opened.
+2026-10-03 01:23:22,386 INFO Result for clip 8, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:22,386 INFO Result for clip 8, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:22,975 INFO First result for clip 9 (modality macro) – window opened.
+2026-10-03 01:23:22,975 INFO Result for clip 9, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:23:22,975 INFO Result for clip 9, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 5: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 4: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 7: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 6: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 8: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:23:22,975 INFO Bundle emitted for clip 9: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:25:23,562 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-03 01:25:23,563 INFO Result for clip 2, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:23,563 INFO Result for clip 2, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:23,661 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-03 01:25:23,661 INFO Result for clip 3, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:23,661 INFO Result for clip 3, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:24,539 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-03 01:25:24,539 INFO Result for clip 1, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:24,539 INFO Result for clip 1, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:24,929 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-03 01:25:24,929 INFO Result for clip 0, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:24,930 INFO Result for clip 0, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:43,355 INFO First result for clip 4 (modality macro) – window opened.
+2026-10-03 01:25:43,355 INFO Result for clip 4, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:43,356 INFO Result for clip 4, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:43,369 INFO First result for clip 5 (modality macro) – window opened.
+2026-10-03 01:25:43,369 INFO Result for clip 5, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:43,369 INFO Result for clip 5, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:44,843 INFO First result for clip 6 (modality macro) – window opened.
+2026-10-03 01:25:44,843 INFO Result for clip 6, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:44,843 INFO Result for clip 6, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:25:45,310 INFO First result for clip 7 (modality macro) – window opened.
+2026-10-03 01:25:45,310 INFO Result for clip 7, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:25:45,310 INFO Result for clip 7, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:26:02,555 INFO First result for clip 9 (modality macro) – window opened.
+2026-10-03 01:26:02,556 INFO Result for clip 9, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:26:02,556 INFO Result for clip 9, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:26:02,685 INFO First result for clip 8 (modality macro) – window opened.
+2026-10-03 01:26:02,685 INFO Result for clip 8, modality macro failed with status: 'transform'. Ignored.
+2026-10-03 01:26:02,685 INFO Result for clip 8, modality mer failed with status: OpenCV(4.11.0) /Users/xperience/GHA-Actions-OpenCV/_work/opencv-python/opencv-python/opencv/modules/core/src/norm.cpp:677: error: (-215:Assertion failed) mask.empty() || mask.type() == CV_8U in function 'norm'
+. Ignored.
+2026-10-03 01:26:02,685 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 4: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 5: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 6: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 7: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 9: modalities ['macro', 'rppg', 'mer']
+2026-10-03 01:26:02,686 INFO Bundle emitted for clip 8: modalities ['macro', 'rppg', 'mer']

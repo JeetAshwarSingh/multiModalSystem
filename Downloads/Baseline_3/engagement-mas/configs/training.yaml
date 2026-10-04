@@ -1,0 +1,21 @@
+# Training configurations
+
+training:
+  batch_size: 8
+  num_epochs: 20
+  learning_rate: 5e-4
+  optimizer: adamw
+  weight_decay: 1e-5
+  lora:
+    enabled: false
+    rank: 4
+    alpha: 1.0
+  loss_weights:
+    engagement: 1.0
+    boredom: 0.5
+    confusion: 0.5
+    frustration: 0.5
+  checkpoint_dir: "../weights/macro"
+  resume_from_checkpoint: null  # path to .pt file if resuming
+  cache_dir: "../data/cache"  # where to store pre‑extracted appearance features
+  device: "auto"  # "auto" uses CUDA/GPU if available, MPS on Mac, CPU otherwise

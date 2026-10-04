@@ -1,0 +1,2 @@
+timeout: 60  # seconds to wait after first modality arrives for a clip
+log_path: "logs/gate.log"

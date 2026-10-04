@@ -1,0 +1,26 @@
+# Fusion configuration
+
+fusion:
+  early_fusion:
+    hidden_dim: 256  # dimension of the linear head after concatenation
+    learning_rate: 1e-3
+    optimizer: adam
+    weight_decay: 1e-5
+    epochs: 10
+    batch_size: 8
+  static_late_fusion:
+    weights:
+      macro: 0.5
+      rppg: 0.3
+      mer: 0.2
+  agentic_fusion:
+    reliability_thresholds:
+      rppg_snr: 5.0
+      mer_flow_noise: 0.2
+      macro_blur: 100.0
+    weight_adjustment:
+      increase: 0.2   # amount to increase weight when reliability high
+      decrease: 0.2   # amount to decrease weight when reliability low
+    max_weight: 0.8
+    min_weight: 0.1
+    smoothing_window: 5  # number of past bundles to smooth confidence scores
