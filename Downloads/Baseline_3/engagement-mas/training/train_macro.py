@@ -37,11 +37,20 @@ class MacroDataset(Dataset):
     On first epoch it extracts embeddings via MacroBlock (appearance path) and stores them.
     """
     def __init__(self, csv_path: str, label_cols: list, root_dir: str, cache_dir: str, device: str = "cpu"):
-        csv_file = csv_path if os.path.isabs(csv_path) or os.path.isfile(csv_path) else os.path.join(root_dir, csv_path)
-        if not os.path.isfile(csv_file):
-            alt = os.path.join(root_dir, os.path.basename(csv_path))
-            if os.path.isfile(alt):
-                csv_file = alt
+        candidates = [
+            csv_path,
+            os.path.join(root_dir, csv_path),
+            os.path.join("..", os.path.basename(csv_path)),
+            os.path.join(root_dir, os.path.basename(csv_path)),
+            os.path.join("data", "daisee", os.path.basename(csv_path))
+        ]
+        csv_file = None
+        for cand in candidates:
+            if os.path.isfile(cand):
+                csv_file = cand
+                break
+        if csv_file is None:
+            raise FileNotFoundError(f"Could not find CSV file '{csv_path}'. Checked candidates: {candidates}")
         self.df = pd.read_csv(csv_file)
         self.label_cols = label_cols
         self.root = root_dir
