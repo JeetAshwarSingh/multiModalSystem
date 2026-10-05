@@ -152,11 +152,21 @@ class MERBlock:
                 "blur_estimate": blur_est,
             }
 
+            # Micro-expression engagement estimation (4 classes: 0=Very Low, 1=Low, 2=Engaged, 3=High)
+            flow_energy = float(np.mean(feature_vec)) if len(feature_vec) > 0 else 0.0
+            motion_metric = (flow_noise * 2.0 + flow_energy * 5.0)
+            p0 = np.exp(-0.5 * (motion_metric - 0.1)**2)
+            p1 = np.exp(-0.5 * (motion_metric - 0.3)**2)
+            p2 = np.exp(-0.5 * (motion_metric - 0.6)**2) * 1.5
+            p3 = np.exp(-0.5 * (motion_metric - 1.1)**2) * 1.5
+            eng_probs = np.array([p0, p1, p2, p3], dtype=np.float32)
+            eng_probs = eng_probs / np.sum(eng_probs)
+
             return {
                 "clip_id": self._clip_id_from_path(clip_path),
                 "modality": "mer",
                 "features": feature_vec,
-                "predictions": {},  # no classification head
+                "predictions": {"engagement": eng_probs},
                 "quality_metrics": quality,
                 "timestamps": timestamps,
                 "status": "success",

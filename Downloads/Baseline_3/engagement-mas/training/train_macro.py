@@ -77,6 +77,11 @@ class MacroDataset(Dataset):
         row = self.df.iloc[idx]
         rel_path = row['clip_path']
         clip_path = os.path.join(self.root, rel_path)
+        if not os.path.isfile(clip_path):
+            if rel_path.startswith("DataSet/") and os.path.isfile(os.path.join(self.root, rel_path[8:])):
+                clip_path = os.path.join(self.root, rel_path[8:])
+            elif os.path.isfile(os.path.join(self.root, "DataSet", rel_path)):
+                clip_path = os.path.join(self.root, "DataSet", rel_path)
         clip_id = self.clip_ids[idx]
         cache_path = self._cache_path(clip_id)
         if os.path.isfile(cache_path):
@@ -167,9 +172,31 @@ def main():
         accel = device_setting
         dev = device_setting
 
+    # Auto-resolve root_dir across environments
+    cfg_root = ds_cfg.get("root_dir", "")
+    resolved_root = None
+    root_candidates = [
+        os.environ.get("DAISEE_ROOT", ""),
+        cfg_root,
+        "/mnt/c/Users/puneet/Downloads/DAiSEE",
+        "C:/Users/puneet/Downloads/DAiSEE",
+        "/Users/jeetashwar/Downloads/DAiSEE",
+        "../DAiSEE",
+        "DAiSEE",
+        "../DataSet",
+        "DataSet",
+    ]
+    for cand in root_candidates:
+        if cand and cand != "/path/to/daisee_root":
+            if os.path.isdir(os.path.expanduser(cand)):
+                resolved_root = os.path.abspath(os.path.expanduser(cand))
+                break
+    if resolved_root is None:
+        resolved_root = cfg_root
+
     dataset = MacroDataset(csv_path=ds_cfg[f"{args.split}_csv"],
                            label_cols=ds_cfg['label_columns'],
-                           root_dir=ds_cfg['root_dir'],
+                           root_dir=resolved_root,
                            cache_dir=cache_dir,
                            device=dev)
     num_workers = int(cfg.get('num_workers', 2))

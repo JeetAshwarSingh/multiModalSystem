@@ -112,8 +112,9 @@ class MacroBlock(nn.Module):
 
         # Auto-load trained checkpoint if available
         ckpt_candidates = [
-            os.path.abspath("weights/macro/last.pt"),
             os.path.abspath("weights/macro/best.ckpt"),
+            os.path.abspath("weights/macro/last.pt"),
+            os.path.abspath("../weights/macro/best.ckpt"),
             os.path.abspath("../weights/macro/last.pt"),
             os.path.abspath("../weights/macro/best.pt"),
         ]

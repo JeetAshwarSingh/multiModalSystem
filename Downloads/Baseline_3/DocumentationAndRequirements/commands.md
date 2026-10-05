@@ -82,5 +82,22 @@ python -m evaluation.evaluate \
 ```
 Useful for debugging before launching a full run.
 
+## 7️⃣ Results & Research Paper Visualizations
+Running evaluation automatically saves individual modality predictions (`macro`, `rppg`, `mer`), all fusion outputs (`early`, `static`, `agentic`), and summary metrics to `resultAndAnalysis/`.
+
+It also generates publication-ready figures (300 DPI) and an IEEE/ACM LaTeX table inside `resultAndAnalysis/Analysis/`:
+* `fig1_modality_vs_fusion_accuracy.png` (Accuracy across all individual modalities and fusions)
+* `fig2_fusion_methods_comparison.png` (Multi-metric comparison of Early, Static, and Agentic)
+* `fig3_per_class_f1_comparison.png` (F1-score across all 4 engagement classes)
+* `fig4_confusion_matrices.png` (Side-by-side confusion matrix heatmaps)
+* `fig5_agentic_modality_weights.png` (Adaptive weight distributions)
+* `fig6_radar_performance_profile.png` (Trade-off radar profile)
+* `paper_summary_table.tex` (LaTeX table ready for inclusion in paper)
+
+To regenerate or update figures at any time from saved predictions:
+```bash
+python -m evaluation.generate_analysis --dir ../resultAndAnalysis
+```
+
 ---
 **All commands assume you are inside the project root** (`.../Baseline_3/engagement-mas`). Adjust paths if you run from elsewhere.

@@ -77,11 +77,21 @@ class RPPGBlock:
             }
             # timestamps – assume one sample per frame (approx.)
             timestamps = list(range(len(bvp)))
+
+            # Physiological engagement estimation (4 classes: 0=Very Low, 1=Low, 2=Engaged, 3=High)
+            hr_norm = (hr - 72.0) / 10.0
+            p0 = 1.0 / (1.0 + np.exp(hr_norm + 1.8))
+            p1 = np.exp(-0.5 * (hr_norm + 0.8)**2)
+            p2 = np.exp(-0.5 * (hr_norm - 0.2)**2) * 1.5
+            p3 = 1.0 / (1.0 + np.exp(-hr_norm + 0.5)) * 1.5
+            eng_probs = np.array([p0, p1, p2, p3], dtype=np.float32)
+            eng_probs = eng_probs / np.sum(eng_probs)
+
             return {
                 "clip_id": self._clip_id_from_path(clip_path),
                 "modality": "rppg",
                 "features": bvp,
-                "predictions": {"hr": hr},
+                "predictions": {"hr": hr, "engagement": eng_probs},
                 "quality_metrics": quality,
                 "timestamps": timestamps,
                 "status": "success",

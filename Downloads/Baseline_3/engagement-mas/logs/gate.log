@@ -1,0 +1,70 @@
+2026-10-05 19:14:30,582 INFO First result for clip 4 (modality macro) – window opened.
+2026-10-05 19:14:30,582 INFO Result for clip 4, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441006/5000441006.avi. Ignored.
+2026-10-05 19:14:30,582 INFO Result for clip 4, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441006/5000441006.avi. Ignored.
+2026-10-05 19:14:30,582 INFO Result for clip 4, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441006/5000441006.avi. Ignored.
+2026-10-05 19:14:30,582 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-05 19:14:30,582 INFO Result for clip 2, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441003/5000441003.avi. Ignored.
+2026-10-05 19:14:30,582 INFO Result for clip 2, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441003/5000441003.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 2, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441003/5000441003.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 5 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 5, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441007/5000441007.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 5, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441007/5000441007.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 5, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441007/5000441007.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 3, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441005/5000441005.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 3, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441005/5000441005.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 3, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441005/5000441005.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 0, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441001/5000441001.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 0, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441001/5000441001.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 0, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441001/5000441001.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 7 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 7, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441009/5000441009.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 7, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441009/5000441009.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 7, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441009/5000441009.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 6 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 6, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441008/5000441008.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 6, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441008/5000441008.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 6, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441008/5000441008.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 1, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441002/5000441002.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 1, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441002/5000441002.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 1, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441002/5000441002.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 8 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 8, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441010/5000441010.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 8, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441010/5000441010.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 8, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441010/5000441010.avi. Ignored.
+2026-10-05 19:14:30,583 INFO First result for clip 9 (modality macro) – window opened.
+2026-10-05 19:14:30,583 INFO Result for clip 9, modality macro failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441012/5000441012.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 9, modality rppg failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441012/5000441012.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Result for clip 9, modality mer failed with status: File not found: /Users/jeetashwar/Downloads/Baseline_3/DataSet/Test/500044/5000441012/5000441012.avi. Ignored.
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 4: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 5: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 7: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 6: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 8: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:14:30,583 INFO Bundle emitted for clip 9: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:24:17,538 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-05 19:24:17,538 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:24:17,694 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-05 19:24:17,694 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:24:17,968 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-05 19:24:17,968 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:24:18,024 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-05 19:24:18,024 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:25:38,187 INFO First result for clip 4 (modality macro) – window opened.
+2026-10-05 19:25:38,189 INFO Bundle emitted for clip 4: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:25:38,218 INFO First result for clip 5 (modality macro) – window opened.
+2026-10-05 19:25:38,218 INFO Bundle emitted for clip 5: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:25:38,904 INFO First result for clip 6 (modality macro) – window opened.
+2026-10-05 19:25:38,904 INFO Bundle emitted for clip 6: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:25:39,373 INFO First result for clip 7 (modality macro) – window opened.
+2026-10-05 19:25:39,373 INFO Bundle emitted for clip 7: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:26:32,786 INFO First result for clip 9 (modality macro) – window opened.
+2026-10-05 19:26:32,787 INFO Bundle emitted for clip 9: modalities ['macro', 'rppg', 'mer']
+2026-10-05 19:26:32,820 INFO First result for clip 8 (modality macro) – window opened.
+2026-10-05 19:26:32,820 INFO Bundle emitted for clip 8: modalities ['macro', 'rppg', 'mer']

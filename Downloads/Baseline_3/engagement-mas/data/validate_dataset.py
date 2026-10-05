@@ -13,20 +13,23 @@ def parse_args():
     return parser.parse_args()
 
 def validate_split(root_dir: pathlib.Path, csv_file: str, label_cols: list, num_classes: int):
-    csv_p = pathlib.Path(csv_file)
-    if csv_p.is_absolute() and csv_p.is_file():
-        csv_path = csv_p
-    elif (root_dir / csv_file).is_file():
-        csv_path = root_dir / csv_file
-    elif csv_p.is_file():
-        csv_path = csv_p
-    elif (pathlib.Path("..") / csv_file).is_file():
-        csv_path = pathlib.Path("..") / csv_file
-    else:
-        csv_path = root_dir / csv_file
+    candidates = [
+        pathlib.Path(csv_file),
+        pathlib.Path("..") / os.path.basename(csv_file),
+        pathlib.Path(os.path.basename(csv_file)),
+        pathlib.Path("..") / csv_file,
+        pathlib.Path("data") / "daisee" / os.path.basename(csv_file),
+        root_dir / csv_file,
+        root_dir / os.path.basename(csv_file),
+    ]
+    csv_path = None
+    for cand in candidates:
+        if cand.is_file():
+            csv_path = cand.resolve()
+            break
 
-    if not csv_path.is_file():
-        print(f"❌ Error: CSV file does not exist: {csv_path}")
+    if csv_path is None or not csv_path.is_file():
+        print(f"❌ Error: CSV file does not exist: {csv_file}")
         return False
 
     try:
@@ -48,6 +51,11 @@ def validate_split(root_dir: pathlib.Path, csv_file: str, label_cols: list, num_
     missing_clips = 0
     for idx, rel_p in enumerate(df["clip_path"]):
         full_p = root_dir / str(rel_p)
+        if not full_p.is_file():
+            if str(rel_p).startswith("DataSet/") and (root_dir / str(rel_p)[8:]).is_file():
+                full_p = root_dir / str(rel_p)[8:]
+            elif (root_dir / "DataSet" / str(rel_p)).is_file():
+                full_p = root_dir / "DataSet" / str(rel_p)
         if not full_p.is_file():
             if missing_clips < 5:
                 print(f"  Missing clip [{idx}]: {full_p}")
@@ -80,7 +88,27 @@ def main():
         sys.exit(1)
 
     cfg = datasets_cfg[args.config]
-    root_dir = pathlib.Path(cfg.get("root_dir", "")).expanduser().resolve()
+    cfg_root = cfg.get("root_dir", "")
+    root_candidates = [
+        os.environ.get("DAISEE_ROOT", ""),
+        cfg_root,
+        "/mnt/c/Users/puneet/Downloads/DAiSEE",
+        "C:/Users/puneet/Downloads/DAiSEE",
+        "/Users/jeetashwar/Downloads/DAiSEE",
+        "../DAiSEE",
+        "DAiSEE",
+        "../DataSet",
+        "DataSet",
+    ]
+    root_dir = None
+    for cand in root_candidates:
+        if cand and cand != "/path/to/daisee_root":
+            p = pathlib.Path(cand).expanduser()
+            if p.is_dir():
+                root_dir = p.resolve()
+                break
+    if root_dir is None:
+        root_dir = pathlib.Path(cfg_root).expanduser().resolve()
     label_cols = cfg.get("label_columns", ["Engagement", "Boredom", "Confusion", "Frustration"])
     num_classes = cfg.get("num_classes", 4)
 

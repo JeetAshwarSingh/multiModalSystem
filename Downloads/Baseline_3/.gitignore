@@ -1,0 +1,27 @@
+# ==============================================================================
+# Model Weights & Cached Checkpoints (Ignore Only)
+# ==============================================================================
+
+# Model checkpoints and weight files
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+
+# Weights directories
+weights/
+**/weights/
+
+# Feature caching and tensor dumps
+data/cache/
+**/data/cache/
+*.npy
+*.npz
+
+# Python byte-code and OS metadata
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
