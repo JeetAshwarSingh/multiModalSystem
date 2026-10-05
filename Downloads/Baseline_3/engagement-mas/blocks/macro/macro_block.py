@@ -56,9 +56,18 @@ class MacroBlock(nn.Module):
     Provides a ``run(clip_path)`` method that returns a dict compatible with the common block interface.
     """
 
-    def __init__(self, use_lora: bool = False, lora_rank: int = 4, device: str = 'cpu'):
+    def __init__(self, use_lora: bool = False, lora_rank: int = 4, device: str = "auto"):
         super().__init__()
-        self.device = device
+        if device == "auto":
+            if torch.cuda.is_available():
+                self.device = torch.device("cuda")
+            elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                self.device = torch.device("mps")
+            else:
+                self.device = torch.device("cpu")
+        else:
+            self.device = torch.device(device)
+        print(f"MacroBlock initialized on device: {self.device}")
         # Appearance backbone – frozen DINOv2 ViT‑B/14
         self.backbone = None
         for m_name in ['vit_base_patch14_dinov2.lvd142m', 'vit_base_patch14_dinov2']:
@@ -108,7 +117,7 @@ class MacroBlock(nn.Module):
         self.head_boredom = nn.Linear(768 + 64, 4)
         self.head_confusion = nn.Linear(768 + 64, 4)
         self.head_frustration = nn.Linear(768 + 64, 4)  # 4 classes
-        self.to(device)
+        self.to(self.device)
 
         # Auto-load trained checkpoint if available
         ckpt_candidates = [

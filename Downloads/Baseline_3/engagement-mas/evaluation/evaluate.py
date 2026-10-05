@@ -49,6 +49,7 @@ def parse_args():
     parser.add_argument("--fusion", type=str, choices=["early", "static", "agentic"], default="agentic", help="Primary fusion strategy")
     parser.add_argument("--disable-modality", type=str, nargs="*", default=[], help="Modality names to mask (macro, rppg, mer)")
     parser.add_argument("--max-clips", type=int, default=None, help="Optional max number of clips to evaluate")
+    parser.add_argument("--device", type=str, default="auto", help="Compute device for vision backbone: auto (default), cuda, mps, or cpu")
     parser.add_argument("--output-dir", type=str, default="resultAndAnalysis", help="Directory to save predictions, metrics, and analysis charts")
     return parser.parse_args()
 
@@ -143,7 +144,7 @@ def main(args=None):
         print(f"Found {len(clip_paths)} clips.")
 
     # Initialise blocks
-    macro = MacroBlock()
+    macro = MacroBlock(device=args.device)
     rppg = RPPGBlock()
     mer = MERBlock()
     gate = SyncGate()
@@ -151,6 +152,9 @@ def main(args=None):
     # Run blocks in parallel per clip
     start_time = time.perf_counter()
     results = []
+    
+    from tqdm import tqdm
+    pbar = tqdm(total=len(clip_paths), desc="Evaluating clips", unit="clip")
     with ThreadPoolExecutor(max_workers=4) as executor:
         future_to_idx = {}
         for idx, clip_path in enumerate(clip_paths):
@@ -166,6 +170,8 @@ def main(args=None):
             bundle = gate.check_and_release(clip_id)
             if bundle is not None:
                 results.append((clip_idx, clip_id, bundle))
+            pbar.update(1)
+    pbar.close()
 
     # After processing all clips, flush any remaining pending bundles (timeout)
     gate.finalize()
