@@ -46,41 +46,53 @@ python -m training.train_macro \
 ```
 The script will pick the best available device (CUDA → CPU). Check the console output for the selected accelerator.
 
-## 5️⃣ Evaluation (choose a fusion strategy)
-```bash
-# Static Late Fusion (baseline)
-python -m evaluation.evaluate \
-    --config configs/fusion.yaml \
-    --dataset daisee \
-    --split test \
-    --fusion static
+## 5️⃣ Evaluation Commands (All Fusions & Modalities)
 
-# Agentic Fusion (adaptive weights)
+> **Note**: A single execution of `evaluate.py` evaluates **all 3 individual modalities** (`macro`, `rppg`, `mer`) and **all 3 fusion strategies** (`early`, `static`, `agentic`) simultaneously on the processed clips, saving individual predictions and overall comparison tables to `resultAndAnalysis/`.
+
+### Run Comprehensive Evaluation (Default: Agentic Primary + All Fusions)
+```bash
 python -m evaluation.evaluate \
     --config configs/fusion.yaml \
     --dataset daisee \
     --split test \
     --fusion agentic
+```
 
-# Early Fusion (deterministic projection)
+### Run Static Late Fusion as Primary
+```bash
+python -m evaluation.evaluate \
+    --config configs/fusion.yaml \
+    --dataset daisee \
+    --split test \
+    --fusion static
+```
+
+### Run Early Feature Fusion as Primary
+```bash
 python -m evaluation.evaluate \
     --config configs/fusion.yaml \
     --dataset daisee \
     --split test \
     --fusion early
 ```
-Add `--disable-modality macro rppg mer` if you want to mask a specific modality.
 
-## 6️⃣ Quick sanity‑check (run only a few clips)
+> **Ablation Studies**: Add `--disable-modality macro` (or `rppg` / `mer`) to simulate missing sensor feeds.
+
+---
+
+## 6️⃣ Quick Sanity-Check (Fast 10 Clips Run)
+Always run this before launching a full test run to verify that videos decode, features extract, and all fusion heads execute without errors:
+
 ```bash
 python -m evaluation.evaluate \
     --config configs/fusion.yaml \
     --dataset daisee \
     --split test_quick \
-    --fusion static \
+    --fusion agentic \
     --max-clips 10
 ```
-Useful for debugging before launching a full run.
+This runs in seconds and outputs immediate accuracy, F1, and confusion matrices for all modalities and fusion methods to the console and to `resultAndAnalysis/`.
 
 ## 7️⃣ Results & Research Paper Visualizations
 Running evaluation automatically saves individual modality predictions (`macro`, `rppg`, `mer`), all fusion outputs (`early`, `static`, `agentic`), and summary metrics to `resultAndAnalysis/`.
