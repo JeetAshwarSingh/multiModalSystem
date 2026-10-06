@@ -43,10 +43,10 @@ except ImportError:
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run evaluation for Engagement‑MAS")
-    parser.add_argument("--config", type=str, required=True, help="Path to fusion config YAML")
-    parser.add_argument("--dataset", type=str, required=True, help="Dataset name (matches entry in configs/datasets.yaml)")
+    parser.add_argument("--config", type=str, default="configs/fusion.yaml", help="Path to fusion config YAML (default: configs/fusion.yaml)")
+    parser.add_argument("--dataset", type=str, default="daisee", help="Dataset name (matches entry in configs/datasets.yaml, default: daisee)")
     parser.add_argument("--split", type=str, default="test", help="Dataset split (e.g. test, val, train, test_quick)")
-    parser.add_argument("--fusion", type=str, choices=["early", "static", "agentic"], default="agentic", help="Primary fusion strategy")
+    parser.add_argument("--fusion", type=str, choices=["early", "static", "agentic", "all"], default="agentic", help="Primary fusion strategy (default: agentic)")
     parser.add_argument("--disable-modality", type=str, nargs="*", default=[], help="Modality names to mask (macro, rppg, mer)")
     parser.add_argument("--max-clips", type=int, default=None, help="Optional max number of clips to evaluate")
     parser.add_argument("--device", type=str, default="auto", help="Compute device for vision backbone: auto (default), cuda, mps, or cpu")
@@ -76,8 +76,19 @@ def main(args=None):
     if args is None:
         args = parse_args()
     
+    # Auto-resolve fusion config path if needed
+    if not os.path.isfile(args.config):
+        cand_config = pathlib.Path(__file__).resolve().parent.parent / "configs" / "fusion.yaml"
+        if cand_config.is_file():
+            args.config = str(cand_config)
+
     # Load dataset config if available
     datasets_cfg_path = pathlib.Path("configs/datasets.yaml")
+    if not datasets_cfg_path.is_file():
+        cand_ds = pathlib.Path(__file__).resolve().parent.parent / "configs" / "datasets.yaml"
+        if cand_ds.is_file():
+            datasets_cfg_path = cand_ds
+
     root_dir = None
     csv_path = None
     if datasets_cfg_path.is_file():
@@ -340,11 +351,15 @@ def main(args=None):
         print(f"Saved predictions CSV: {csv_file_run}")
 
     # Backwards compatibility: results_<fusion>.csv
-    primary_prefix = f"fusion_{args.fusion}" if args.fusion in ["early", "static", "agentic"] else args.fusion
+    selected_fusion = "agentic" if args.fusion == "all" else args.fusion
+    primary_prefix = f"fusion_{selected_fusion}" if selected_fusion in ["early", "static", "agentic"] else selected_fusion
     if (run_dir / f"{primary_prefix}_predictions.csv").is_file():
         import shutil
-        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", run_dir / f"results_{args.fusion}.csv")
-        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", out_dir / f"results_{args.fusion}.csv")
+        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", run_dir / f"results_{selected_fusion}.csv")
+        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", out_dir / f"results_{selected_fusion}.csv")
+        if args.fusion == "all":
+            shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", run_dir / "results_all.csv")
+            shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", out_dir / "results_all.csv")
 
     # Compute comprehensive metrics
     summary_records = []
