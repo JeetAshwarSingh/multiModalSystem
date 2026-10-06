@@ -24,7 +24,7 @@ from evaluation.evaluate import load_dataset
 def parse_args():
     parser = argparse.ArgumentParser(description="Train MER Engagement Classifier")
     parser.add_argument("--csv", type=str, default="train.csv", help="Training CSV path")
-    parser.add_argument("--root-dir", type=str, default="/Users/jeetashwar/Downloads/DAiSEE", help="DAiSEE root dir")
+    parser.add_argument("--root-dir", type=str, default=None, help="DAiSEE root dir (auto-detected if omitted)")
     parser.add_argument("--max-clips", type=int, default=100, help="Max clips to extract features for training")
     parser.add_argument("--output", type=str, default="weights/mer/classifier.pkl", help="Output path for trained model")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
@@ -56,7 +56,40 @@ def main():
     if csv_path is None:
         raise FileNotFoundError(f"Could not find training CSV at {args.csv}")
 
-    root_dir = pathlib.Path(args.root_dir).expanduser().resolve()
+    # Auto-resolve root_dir across environments
+    cfg_root = ""
+    ds_yaml = pathlib.Path("configs/datasets.yaml")
+    if not ds_yaml.is_file():
+        cand_yaml = pathlib.Path(__file__).resolve().parent.parent / "configs" / "datasets.yaml"
+        if cand_yaml.is_file():
+            ds_yaml = cand_yaml
+    if ds_yaml.is_file():
+        import yaml
+        with open(ds_yaml) as f:
+            cfg_root = yaml.safe_load(f).get("datasets", {}).get("daisee", {}).get("root_dir", "")
+
+    root_candidates = [
+        args.root_dir,
+        os.environ.get("DAISEE_ROOT", ""),
+        cfg_root,
+        "/mnt/c/Users/puneet/Downloads/DAiSEE",
+        "C:/Users/puneet/Downloads/DAiSEE",
+        "/Users/jeetashwar/Downloads/DAiSEE",
+        "../DAiSEE",
+        "DAiSEE",
+        "../DataSet",
+        "DataSet",
+    ]
+    root_dir = None
+    for cand in root_candidates:
+        if cand and cand != "/path/to/daisee_root":
+            p = pathlib.Path(cand).expanduser()
+            if p.is_dir():
+                root_dir = p.resolve()
+                break
+    if root_dir is None:
+        root_dir = pathlib.Path(args.root_dir or "/path/to/daisee_root").expanduser().resolve()
+
     print(f"Loading training data from {csv_path} with root {root_dir}...")
     clip_paths, labels = load_dataset(csv_path, root_dir)
 
@@ -112,10 +145,16 @@ def main():
     print(f"\nTraining complete: Accuracy = {acc * 100:.2f}%, Macro-F1 = {f1:.4f}")
     print(classification_report(y, y_pred, zero_division=0))
 
-    # Save
+    # Save safely
+    target_weights = pathlib.Path("weights")
+    if target_weights.is_symlink() and not target_weights.exists():
+        target_weights.unlink()
+    elif target_weights.is_file():
+        target_weights.unlink()
+
     out_path = pathlib.Path(args.output)
     if not out_path.is_absolute():
-        if (pathlib.Path("..") / args.output).parent.is_dir():
+        if (pathlib.Path("..") / "weights").is_dir():
             out_path = pathlib.Path("..") / args.output
     out_path.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump({"model": clf, "scaler": scaler}, out_path)
