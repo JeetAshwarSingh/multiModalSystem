@@ -1,0 +1,362 @@
+{
+  "Macro Modality": {
+    "accuracy": 0.002242152466367713,
+    "macro_f1": 0.0011185682326621924,
+    "weighted_f1": 1.0032002086656434e-05,
+    "precision": 0.0005605381165919282,
+    "recall": 0.25,
+    "confusion_matrix": [
+      [
+        4,
+        0,
+        0,
+        0
+      ],
+      [
+        84,
+        0,
+        0,
+        0
+      ],
+      [
+        882,
+        0,
+        0,
+        0
+      ],
+      [
+        814,
+        0,
+        0,
+        0
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.002242152466367713,
+        "recall": 1.0,
+        "f1": 0.00447427293064877,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  },
+  "rPPG Modality": {
+    "accuracy": 0.4943946188340807,
+    "macro_f1": 0.16541635408852212,
+    "weighted_f1": 0.3271238213140729,
+    "precision": 0.12359865470852018,
+    "recall": 0.25,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        84,
+        0
+      ],
+      [
+        0,
+        0,
+        882,
+        0
+      ],
+      [
+        0,
+        0,
+        814,
+        0
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.4943946188340807,
+        "recall": 1.0,
+        "f1": 0.6616654163540885,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  },
+  "MER Modality": {
+    "accuracy": 0.492152466367713,
+    "macro_f1": 0.21451169899788544,
+    "weighted_f1": 0.4156505390895588,
+    "precision": 0.23509638394359123,
+    "recall": 0.2517786803501089,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        54,
+        29
+      ],
+      [
+        0,
+        0,
+        755,
+        127
+      ],
+      [
+        0,
+        0,
+        691,
+        123
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.5026631158455392,
+        "recall": 0.8560090702947846,
+        "f1": 0.6333892617449663,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.4377224199288256,
+        "recall": 0.1511056511056511,
+        "f1": 0.22465753424657536,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  },
+  "Early Fusion": {
+    "accuracy": 0.002242152466367713,
+    "macro_f1": 0.0011185682326621924,
+    "weighted_f1": 1.0032002086656434e-05,
+    "precision": 0.0005605381165919282,
+    "recall": 0.25,
+    "confusion_matrix": [
+      [
+        4,
+        0,
+        0,
+        0
+      ],
+      [
+        84,
+        0,
+        0,
+        0
+      ],
+      [
+        882,
+        0,
+        0,
+        0
+      ],
+      [
+        814,
+        0,
+        0,
+        0
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.002242152466367713,
+        "recall": 1.0,
+        "f1": 0.00447427293064877,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  },
+  "Static Late Fusion": {
+    "accuracy": 0.49551569506726456,
+    "macro_f1": 0.16904266208801735,
+    "weighted_f1": 0.33374137801796827,
+    "precision": 0.24887133182844245,
+    "recall": 0.25070896499467926,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        3,
+        1
+      ],
+      [
+        0,
+        0,
+        83,
+        1
+      ],
+      [
+        0,
+        0,
+        878,
+        4
+      ],
+      [
+        0,
+        0,
+        808,
+        6
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.49548532731376976,
+        "recall": 0.9954648526077098,
+        "f1": 0.6616428033157499,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.5,
+        "recall": 0.007371007371007371,
+        "f1": 0.014527845036319613,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  },
+  "Agentic Late Fusion": {
+    "accuracy": 0.4943946188340807,
+    "macro_f1": 0.16541635408852212,
+    "weighted_f1": 0.3271238213140729,
+    "precision": 0.12359865470852018,
+    "recall": 0.25,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        84,
+        0
+      ],
+      [
+        0,
+        0,
+        882,
+        0
+      ],
+      [
+        0,
+        0,
+        814,
+        0
+      ]
+    ],
+    "per_class": {
+      "Class_0": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4
+      },
+      "Class_1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 84
+      },
+      "Class_2": {
+        "precision": 0.4943946188340807,
+        "recall": 1.0,
+        "f1": 0.6616654163540885,
+        "support": 882
+      },
+      "Class_3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 814
+      }
+    },
+    "total_samples": 1784
+  }
+}
