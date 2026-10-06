@@ -1,5 +1,0 @@
-clip_id,clip_path,pred_engagement,true_engagement,prob_class_0,prob_class_1,prob_class_2,prob_class_3
-0,/Users/jeetashwar/Downloads/DAiSEE/DataSet/Test/500044/5000441001/5000441001.avi,0,2,0.49058333,0.32775,0.16166666,0.02
-1,/Users/jeetashwar/Downloads/DAiSEE/DataSet/Test/500044/5000441002/5000441002.avi,0,2,0.5740476,0.3042857,0.011666667,0.11
-2,/Users/jeetashwar/Downloads/DAiSEE/DataSet/Test/500044/5000441003/5000441003.avi,2,2,0.02125,0.40005952,0.40285715,0.17583333
-3,/Users/jeetashwar/Downloads/DAiSEE/DataSet/Test/500044/5000441005/5000441005.avi,0,2,0.38267857,0.25898808,0.22694445,0.13138889

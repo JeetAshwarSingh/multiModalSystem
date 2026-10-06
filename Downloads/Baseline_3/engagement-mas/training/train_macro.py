@@ -43,16 +43,23 @@ class MacroDataset(Dataset):
     On first epoch it extracts embeddings via MacroBlock (appearance path) and stores them.
     """
     def __init__(self, csv_path: str, label_cols: list, root_dir: str, cache_dir: str, device: str = "cpu"):
+        base_name = os.path.basename(str(csv_path).strip("/\\"))
+        clean_rel = str(csv_path).lstrip("/\\")
+        baseline_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         candidates = [
             csv_path,
-            os.path.join(root_dir, csv_path),
-            os.path.join("..", os.path.basename(csv_path)),
-            os.path.join(root_dir, os.path.basename(csv_path)),
-            os.path.join("data", "daisee", os.path.basename(csv_path))
+            os.path.join("..", base_name),
+            base_name,
+            os.path.join(baseline_dir, base_name),
+            os.path.join("..", clean_rel),
+            clean_rel,
+            os.path.join(root_dir, clean_rel) if root_dir else None,
+            os.path.join(root_dir, base_name) if root_dir else None,
+            os.path.join("data", "daisee", base_name)
         ]
         csv_file = None
         for cand in candidates:
-            if os.path.isfile(cand):
+            if cand and os.path.isfile(cand):
                 csv_file = cand
                 break
         if csv_file is None:

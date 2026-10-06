@@ -108,25 +108,38 @@ def main(args=None):
                     root_dir = pathlib.Path(cfg_root).expanduser().resolve()
                 csv_key = f"{args.split}_csv"
                 csv_name = str(ds_cfg.get(csv_key, f"{args.split}.csv"))
+                base_name = os.path.basename(csv_name.strip("/\\"))
+                baseline_dir = datasets_cfg_path.resolve().parent.parent.parent
+                clean_rel = csv_name.lstrip("/\\")
                 candidates = [
                     pathlib.Path(csv_name),
-                    pathlib.Path("..") / os.path.basename(csv_name),
-                    pathlib.Path(os.path.basename(csv_name)),
-                    pathlib.Path("..") / csv_name,
-                    pathlib.Path("data") / args.dataset / os.path.basename(csv_name),
+                    pathlib.Path("..") / base_name,
+                    pathlib.Path(base_name),
+                    baseline_dir / base_name,
+                    pathlib.Path("..") / clean_rel,
+                    pathlib.Path(clean_rel),
+                    baseline_dir / clean_rel,
+                    pathlib.Path("data") / args.dataset / base_name,
                 ]
                 if root_dir is not None:
-                    candidates.extend([root_dir / csv_name, root_dir / os.path.basename(csv_name)])
+                    candidates.extend([root_dir / csv_name, root_dir / base_name, root_dir / clean_rel])
                 for cand in candidates:
                     if cand.is_file():
                         csv_path = cand.resolve()
                         break
 
     if csv_path is None or not csv_path.is_file():
-        if (pathlib.Path("..") / f"{args.split}.csv").is_file():
-            csv_path = pathlib.Path("..") / f"{args.split}.csv"
-        else:
-            csv_path = pathlib.Path("data") / args.dataset / f"{args.split}.csv"
+        split_name = f"{args.split}.csv"
+        fallback_candidates = [
+            pathlib.Path("..") / split_name,
+            pathlib.Path(split_name),
+            pathlib.Path(__file__).resolve().parent.parent.parent / split_name,
+            pathlib.Path("data") / args.dataset / split_name,
+        ]
+        for fb in fallback_candidates:
+            if fb.is_file():
+                csv_path = fb.resolve()
+                break
 
     if not csv_path.is_file():
         raise FileNotFoundError(

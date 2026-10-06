@@ -36,10 +36,17 @@ def main():
     np.random.seed(args.seed)
 
     # Resolve paths
+    base_name = os.path.basename(str(args.csv).strip("/\\"))
+    clean_rel = str(args.csv).lstrip("/\\")
+    baseline_dir = pathlib.Path(__file__).resolve().parent.parent.parent
     csv_candidates = [
         pathlib.Path(args.csv),
-        pathlib.Path("..") / args.csv,
-        pathlib.Path(args.csv).resolve(),
+        pathlib.Path("..") / base_name,
+        pathlib.Path(base_name),
+        baseline_dir / base_name,
+        pathlib.Path("..") / clean_rel,
+        pathlib.Path(clean_rel),
+        baseline_dir / clean_rel,
     ]
     csv_path = None
     for cand in csv_candidates:

@@ -13,18 +13,23 @@ def parse_args():
     return parser.parse_args()
 
 def validate_split(root_dir: pathlib.Path, csv_file: str, label_cols: list, num_classes: int):
+    base_name = os.path.basename(str(csv_file).strip("/\\"))
+    clean_rel = str(csv_file).lstrip("/\\")
+    baseline_dir = pathlib.Path(__file__).resolve().parent.parent.parent
     candidates = [
         pathlib.Path(csv_file),
-        pathlib.Path("..") / os.path.basename(csv_file),
-        pathlib.Path(os.path.basename(csv_file)),
-        pathlib.Path("..") / csv_file,
-        pathlib.Path("data") / "daisee" / os.path.basename(csv_file),
-        root_dir / csv_file,
-        root_dir / os.path.basename(csv_file),
+        pathlib.Path("..") / base_name,
+        pathlib.Path(base_name),
+        baseline_dir / base_name,
+        pathlib.Path("..") / clean_rel,
+        pathlib.Path(clean_rel),
+        pathlib.Path("data") / "daisee" / base_name,
+        root_dir / base_name if root_dir else None,
+        root_dir / clean_rel if root_dir else None,
     ]
     csv_path = None
     for cand in candidates:
-        if cand.is_file():
+        if cand and cand.is_file():
             csv_path = cand.resolve()
             break
 
