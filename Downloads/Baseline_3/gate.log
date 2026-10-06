@@ -1,0 +1,18 @@
+2026-10-06 20:48:56,650 INFO First result for clip clip123 (modality macro) – window opened.
+2026-10-06 20:48:56,650 INFO Bundle emitted for clip clip123: modalities ['macro', 'rppg', 'mer']
+2026-10-06 20:48:56,650 INFO First result for clip clip_missing (modality macro) – window opened.
+2026-10-06 20:48:57,855 INFO Bundle emitted for clip clip_missing: modalities ['macro', 'rppg']
+2026-10-06 20:48:57,858 INFO First result for clip clip_late (modality macro) – window opened.
+2026-10-06 20:48:58,463 INFO Bundle emitted for clip clip_late: modalities ['macro']
+2026-10-06 20:48:58,463 WARNING Late result received for clip clip_late, modality rppg. Discarded.
+2026-10-06 20:48:58,465 INFO First result for clip clip_dup (modality macro) – window opened.
+2026-10-06 20:48:58,465 WARNING Duplicate result for clip clip_dup, modality macro. Keeping first.
+2026-10-06 21:17:36,538 INFO First result for clip clip123 (modality macro) – window opened.
+2026-10-06 21:17:36,540 INFO Bundle emitted for clip clip123: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:17:36,541 INFO First result for clip clip_missing (modality macro) – window opened.
+2026-10-06 21:17:37,745 INFO Bundle emitted for clip clip_missing: modalities ['macro', 'rppg']
+2026-10-06 21:17:37,746 INFO First result for clip clip_late (modality macro) – window opened.
+2026-10-06 21:17:38,352 INFO Bundle emitted for clip clip_late: modalities ['macro']
+2026-10-06 21:17:38,352 WARNING Late result received for clip clip_late, modality rppg. Discarded.
+2026-10-06 21:17:38,353 INFO First result for clip clip_dup (modality macro) – window opened.
+2026-10-06 21:17:38,353 WARNING Duplicate result for clip clip_dup, modality macro. Keeping first.

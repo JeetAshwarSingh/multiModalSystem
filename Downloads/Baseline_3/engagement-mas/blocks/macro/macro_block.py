@@ -130,15 +130,35 @@ class MacroBlock(nn.Module):
         for ckpt in ckpt_candidates:
             if os.path.isfile(ckpt):
                 try:
-                    sd = torch.load(ckpt, map_location=device)
+                    loc = "cpu" if str(self.device) == "mps" else self.device
+                    sd = torch.load(ckpt, map_location=loc)
                     if isinstance(sd, dict) and "state_dict" in sd:
                         sd = sd["state_dict"]
                     clean_sd = {k.replace("block.", "").replace("model.", ""): v for k, v in sd.items()}
+                    
+                    model_keys = set(self.state_dict().keys())
+                    ckpt_keys = set(clean_sd.keys())
+                    matched = model_keys & ckpt_keys
+                    missing_in_ckpt = model_keys - ckpt_keys
+                    unexpected = ckpt_keys - model_keys
+                    
+                    print(f"Macro Checkpoint loading report for {ckpt}:")
+                    print(f"  Matched keys: {len(matched)}/{len(model_keys)}")
+                    if missing_in_ckpt:
+                        print(f"  Missing in checkpoint (using random init): {len(missing_in_ckpt)} keys")
+                    if unexpected:
+                        print(f"  Unexpected keys in checkpoint (ignored): {len(unexpected)} keys")
+                    
+                    critical_keys = ["head_engagement.weight", "head_engagement.bias"]
+                    for k in critical_keys:
+                        if k not in matched:
+                            print(f"  ⚠️ CRITICAL: {k} was NOT loaded from checkpoint!")
+                    
                     self.load_state_dict(clean_sd, strict=False)
                     print(f"Loaded trained Macro checkpoint from {ckpt}")
                     break
                 except Exception as e:
-                    pass
+                    print(f"Warning: Failed loading checkpoint {ckpt}: {e}")
         # MediaPipe for deterministic face landmarks
         if FaceMesh is not None:
             try:
@@ -178,35 +198,96 @@ class MacroBlock(nn.Module):
             return cv2.resize(frame, (224, 224))
         return cv2.resize(roi, (224, 224))
 
+    @staticmethod
+    def _eye_aspect_ratio(landmarks, indices) -> float:
+        """Compute Eye Aspect Ratio (EAR) from 6 landmark indices."""
+        pts = [np.array([landmarks[i].x, landmarks[i].y]) for i in indices]
+        v1 = np.linalg.norm(pts[1] - pts[5])
+        v2 = np.linalg.norm(pts[2] - pts[4])
+        horiz = np.linalg.norm(pts[0] - pts[3])
+        return float((v1 + v2) / (2.0 * horiz + 1e-6))
+
     def _behavior_features(self, frame: np.ndarray) -> np.ndarray:
-        """Extract simple handcrafted behavioral features from a face ROI.
-        Returns a 30‑dim numpy array (placeholder values – deterministic).
-        """
+        """Extract rich 30-dimensional behavioral features from facial landmarks."""
         if self.mp_face_mesh is None:
             return np.zeros(30, dtype=np.float32)
-        # For reproducibility we compute fixed geometric ratios from landmarks.
+
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.mp_face_mesh.process(rgb)
         if not results.multi_face_landmarks:
             return np.zeros(30, dtype=np.float32)
+
         lm = results.multi_face_landmarks[0].landmark
-        # Example features (distances, angles). We'll compute a few deterministic ones.
-        # Eye corners (landmark indices from MediaPipe): left eye outer=33, right eye outer=263
-        left_eye = np.array([lm[33].x, lm[33].y])
-        right_eye = np.array([lm[263].x, lm[263].y])
-        eye_distance = np.linalg.norm(right_eye - left_eye)
-        # Nose tip and mouth center (landmarks 1 and 13)
-        nose = np.array([lm[1].x, lm[1].y])
-        mouth = np.array([lm[13].x, lm[13].y])
-        nose_mouth_dist = np.linalg.norm(mouth - nose)
-        # Simple ratios
-        ratio = eye_distance / (nose_mouth_dist + 1e-6)
-        # Populate a vector – repeat the same values to fill 30 dims for determinism.
-        feats = np.full(30, ratio, dtype=np.float32)
-        return feats
+        feats = []
+
+        # 1. Eye Aspect Ratios (EAR) — blinks & drowsiness (2 features)
+        left_ear = self._eye_aspect_ratio(lm, [33, 160, 158, 133, 153, 144])
+        right_ear = self._eye_aspect_ratio(lm, [362, 385, 387, 263, 373, 380])
+        feats.extend([left_ear, right_ear])
+
+        # 2. Mouth Aspect Ratio (MAR) — yawning / speech (1 feature)
+        m_top = np.array([lm[13].x, lm[13].y])
+        m_bot = np.array([lm[14].x, lm[14].y])
+        m_left = np.array([lm[78].x, lm[78].y])
+        m_right = np.array([lm[308].x, lm[308].y])
+        mar = float(np.linalg.norm(m_top - m_bot) / (np.linalg.norm(m_left - m_right) + 1e-6))
+        feats.append(mar)
+
+        # 3. Head Pose Proxy — yaw, pitch, roll (3 features)
+        nose_tip = np.array([lm[1].x, lm[1].y, lm[1].z])
+        chin = np.array([lm[152].x, lm[152].y, lm[152].z])
+        left_ear_pt = np.array([lm[234].x, lm[234].y, lm[234].z])
+        right_ear_pt = np.array([lm[454].x, lm[454].y, lm[454].z])
+        yaw = float(np.arctan2(right_ear_pt[2] - left_ear_pt[2], right_ear_pt[0] - left_ear_pt[0]))
+        pitch = float(np.arctan2(chin[1] - nose_tip[1], chin[2] - nose_tip[2]))
+        roll = float(np.arctan2(right_ear_pt[1] - left_ear_pt[1], right_ear_pt[0] - left_ear_pt[0]))
+        feats.extend([yaw, pitch, roll])
+
+        # 4. Eyebrow raise distance normalized by face height (2 features)
+        face_scale = float(np.linalg.norm(np.array([lm[10].x, lm[10].y]) - np.array([lm[152].x, lm[152].y])) + 1e-6)
+        left_brow = np.array([lm[70].x, lm[70].y])
+        left_eye_top = np.array([lm[159].x, lm[159].y])
+        right_brow = np.array([lm[300].x, lm[300].y])
+        right_eye_top = np.array([lm[386].x, lm[386].y])
+        feats.append(float(np.linalg.norm(left_brow - left_eye_top) / face_scale))
+        feats.append(float(np.linalg.norm(right_brow - right_eye_top) / face_scale))
+
+        # 5. Gaze direction proxy — iris position relative to eye centers (4 features)
+        if len(lm) > 473:
+            left_iris = np.array([lm[468].x, lm[468].y])
+            right_iris = np.array([lm[473].x, lm[473].y])
+            left_eye_center = (np.array([lm[33].x, lm[33].y]) + np.array([lm[133].x, lm[133].y])) / 2
+            right_eye_center = (np.array([lm[362].x, lm[362].y]) + np.array([lm[263].x, lm[263].y])) / 2
+            feats.extend([
+                float(left_iris[0] - left_eye_center[0]),
+                float(left_iris[1] - left_eye_center[1]),
+                float(right_iris[0] - right_eye_center[0]),
+                float(right_iris[1] - right_eye_center[1]),
+            ])
+        else:
+            feats.extend([0.0, 0.0, 0.0, 0.0])
+
+        # 6. Additional facial distance ratios for expressions (18 features)
+        key_landmarks = [1, 33, 61, 133, 159, 263, 291, 362, 386, 13, 14, 78, 308, 152, 10, 234]
+        for i in range(len(key_landmarks)):
+            for j in range(i + 1, min(i + 3, len(key_landmarks))):
+                li = np.array([lm[key_landmarks[i]].x, lm[key_landmarks[i]].y])
+                lj = np.array([lm[key_landmarks[j]].x, lm[key_landmarks[j]].y])
+                feats.append(float(np.linalg.norm(li - lj) / face_scale))
+                if len(feats) >= 30:
+                    break
+            if len(feats) >= 30:
+                break
+
+        feats = feats[:30]
+        while len(feats) < 30:
+            feats.append(0.0)
+
+        return np.array(feats, dtype=np.float32)
 
     def run(self, clip_path: str) -> Dict[str, Any]:
         if not os.path.isfile(clip_path):
+            print(f"[MacroBlock Warning] Video file not found: {clip_path}")
             return {"clip_id": None, "modality": "macro", "status": f"File not found: {clip_path}"}
         try:
             cap = cv2.VideoCapture(clip_path)

@@ -5420,3 +5420,45 @@
 2026-10-06 10:49:08,886 INFO Bundle emitted for clip 1781: modalities ['macro', 'rppg', 'mer']
 2026-10-06 10:49:08,888 INFO Bundle emitted for clip 1782: modalities ['macro', 'rppg', 'mer']
 2026-10-06 10:49:08,891 INFO Bundle emitted for clip 1783: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:12:02,726 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-06 21:12:02,727 INFO Result for clip 2, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:12:03,015 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-06 21:12:03,015 INFO Result for clip 3, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:12:03,281 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-06 21:12:03,281 INFO Result for clip 1, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:12:03,385 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-06 21:12:03,385 INFO Result for clip 0, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:12:03,386 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:12:03,386 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:12:03,386 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:12:03,386 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:13:59,516 INFO First result for clip 3 (modality macro) – window opened.
+2026-10-06 21:13:59,517 INFO Result for clip 3, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:13:59,567 INFO First result for clip 2 (modality macro) – window opened.
+2026-10-06 21:13:59,567 INFO Result for clip 2, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:00,326 INFO First result for clip 1 (modality macro) – window opened.
+2026-10-06 21:14:00,326 INFO Result for clip 1, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:00,355 INFO First result for clip 0 (modality macro) – window opened.
+2026-10-06 21:14:00,355 INFO Result for clip 0, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:52,583 INFO First result for clip 4 (modality macro) – window opened.
+2026-10-06 21:14:52,585 INFO Result for clip 4, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:53,044 INFO First result for clip 5 (modality macro) – window opened.
+2026-10-06 21:14:53,044 INFO Result for clip 5, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:53,704 INFO First result for clip 7 (modality macro) – window opened.
+2026-10-06 21:14:53,704 INFO Result for clip 7, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:14:53,828 INFO First result for clip 6 (modality macro) – window opened.
+2026-10-06 21:14:53,829 INFO Result for clip 6, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:15:23,633 INFO First result for clip 8 (modality macro) – window opened.
+2026-10-06 21:15:23,633 INFO Result for clip 8, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:15:23,869 INFO First result for clip 9 (modality macro) – window opened.
+2026-10-06 21:15:23,869 INFO Result for clip 9, modality macro failed with status: torch.cat(): all input tensors must be on the same device. Received cpu and mps:0. Ignored.
+2026-10-06 21:15:23,869 INFO Bundle emitted for clip 3: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,869 INFO Bundle emitted for clip 2: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,869 INFO Bundle emitted for clip 1: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,869 INFO Bundle emitted for clip 0: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 4: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 5: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 7: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 6: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 8: modalities ['macro', 'rppg', 'mer']
+2026-10-06 21:15:23,870 INFO Bundle emitted for clip 9: modalities ['macro', 'rppg', 'mer']

@@ -30,12 +30,13 @@ def _setup_plot_style():
 
 def compute_detailed_metrics(y_true: List[int], y_pred: List[int], num_classes: int = 4) -> Dict[str, Any]:
     """Computes comprehensive classification metrics across all classes."""
-    from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
+    from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, balanced_accuracy_score
     
     y_t = np.asarray(y_true, dtype=int)
     y_p = np.asarray(y_pred, dtype=int)
     
     acc = float(accuracy_score(y_t, y_p))
+    balanced_acc = float(balanced_accuracy_score(y_t, y_p))
     macro_f1 = float(f1_score(y_t, y_p, average="macro", zero_division=0))
     weighted_f1 = float(f1_score(y_t, y_p, average="weighted", zero_division=0))
     prec = float(precision_score(y_t, y_p, average="macro", zero_division=0))
@@ -60,6 +61,7 @@ def compute_detailed_metrics(y_true: List[int], y_pred: List[int], num_classes: 
         
     return {
         "accuracy": acc,
+        "balanced_accuracy": balanced_acc,
         "macro_f1": macro_f1,
         "weighted_f1": weighted_f1,
         "precision": prec,

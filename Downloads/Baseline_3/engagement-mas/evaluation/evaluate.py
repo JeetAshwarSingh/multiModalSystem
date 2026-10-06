@@ -201,13 +201,24 @@ def main(args=None):
             out_dir = (pathlib.Path(".") / args.output_dir).resolve()
         elif (pathlib.Path("..") / "resultAndAnalysis").is_dir():
             out_dir = (pathlib.Path("..") / "resultAndAnalysis").resolve()
+        elif (pathlib.Path("..") / "ResultAndAnalysis").is_dir():
+            out_dir = (pathlib.Path("..") / "ResultAndAnalysis").resolve()
         elif pathlib.Path("configs").is_dir():
             out_dir = (pathlib.Path("..") / args.output_dir).resolve()
         else:
             out_dir = pathlib.Path(args.output_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
-    analysis_dir = out_dir / "Analysis"
-    analysis_dir.mkdir(parents=True, exist_ok=True)
+    root_analysis_dir = out_dir / "Analysis"
+    root_analysis_dir.mkdir(parents=True, exist_ok=True)
+
+    # Each run is saved in its own timestamped directory inside ResultAndAnalysis
+    from datetime import datetime
+    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = out_dir / f"run_{timestamp_str}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    run_analysis_dir = run_dir / "Analysis"
+    run_analysis_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Creating timestamped run directory: {run_dir}")
 
     # Prepare fusion models
     early_model = EarlyFusion(args.config)
@@ -309,15 +320,18 @@ def main(args=None):
             "prob_class_3": prob_arr[:, 3],
         })
         prefix = file_prefix_map.get(m, m.lower().replace(" ", "_"))
-        csv_file = out_dir / f"{prefix}_predictions.csv"
-        df_out.to_csv(csv_file, index=False)
-        print(f"Saved predictions CSV: {csv_file}")
+        csv_file_run = run_dir / f"{prefix}_predictions.csv"
+        csv_file_root = out_dir / f"{prefix}_predictions.csv"
+        df_out.to_csv(csv_file_run, index=False)
+        df_out.to_csv(csv_file_root, index=False)
+        print(f"Saved predictions CSV: {csv_file_run}")
 
     # Backwards compatibility: results_<fusion>.csv
     primary_prefix = f"fusion_{args.fusion}" if args.fusion in ["early", "static", "agentic"] else args.fusion
-    if (out_dir / f"{primary_prefix}_predictions.csv").is_file():
+    if (run_dir / f"{primary_prefix}_predictions.csv").is_file():
         import shutil
-        shutil.copy(out_dir / f"{primary_prefix}_predictions.csv", out_dir / f"results_{args.fusion}.csv")
+        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", run_dir / f"results_{args.fusion}.csv")
+        shutil.copy(run_dir / f"{primary_prefix}_predictions.csv", out_dir / f"results_{args.fusion}.csv")
 
     # Compute comprehensive metrics
     summary_records = []
@@ -353,26 +367,27 @@ def main(args=None):
         })
 
     summary_df = pd.DataFrame(summary_records)
-    summary_csv_path = out_dir / "overall_metrics_summary.csv"
-    summary_df.to_csv(summary_csv_path, index=False)
-    print(f"Saved overall metrics summary: {summary_csv_path}")
+    summary_df.to_csv(run_dir / "overall_metrics_summary.csv", index=False)
+    summary_df.to_csv(out_dir / "overall_metrics_summary.csv", index=False)
+    print(f"Saved overall metrics summary: {run_dir / 'overall_metrics_summary.csv'}")
 
-    json_path = out_dir / "metrics_summary.json"
-    with open(json_path, "w") as f:
-        json.dump(json_metrics, f, indent=2)
-    print(f"Saved detailed metrics JSON: {json_path}")
+    for target_json in [run_dir / "metrics_summary.json", out_dir / "metrics_summary.json"]:
+        with open(target_json, "w") as f:
+            json.dump(json_metrics, f, indent=2)
+    print(f"Saved detailed metrics JSON: {run_dir / 'metrics_summary.json'}")
 
-    # Generate publication-ready figures & LaTeX table in Analysis/
-    if generate_all_plots is not None:
-        try:
-            generate_all_plots(summary_df, per_class_all, cm_all, agentic_weights, analysis_dir)
-        except Exception as e:
-            print(f"Plot generation notice: {e}")
-    if generate_latex_table is not None:
-        try:
-            generate_latex_table(summary_df, analysis_dir / "paper_summary_table.tex")
-        except Exception as e:
-            pass
+    # Generate publication-ready figures & LaTeX table in run_analysis_dir and root_analysis_dir
+    for a_dir in [run_analysis_dir, root_analysis_dir]:
+        if generate_all_plots is not None:
+            try:
+                generate_all_plots(summary_df, per_class_all, cm_all, agentic_weights, a_dir)
+            except Exception as e:
+                print(f"Plot generation notice: {e}")
+        if generate_latex_table is not None:
+            try:
+                generate_latex_table(summary_df, a_dir / "paper_summary_table.tex")
+            except Exception as e:
+                pass
 
     # Print summary table to console
     print("\n" + "=" * 70)
@@ -384,8 +399,8 @@ def main(args=None):
     print("-" * 70)
     for _, r in summary_df.iterrows():
         print(f"{r['Method']:<22} | {r['Accuracy']*100:>8.2f}% | {r['Macro-F1']:>10.4f} | {r['Precision']:>10.4f} | {r['Recall']:>10.4f}")
-    print("=" * 70)
-    print(f"All predictions, metrics, and charts saved to: {out_dir}")
+    print(f"Timestamped run stored at: {run_dir}")
+    print(f"Latest run results also mirrored to: {out_dir}")
 
 def run_all_modalities(clip_idx, clip_path, macro, rppg, mer, disabled):
     """Run the three perception blocks for a single clip.

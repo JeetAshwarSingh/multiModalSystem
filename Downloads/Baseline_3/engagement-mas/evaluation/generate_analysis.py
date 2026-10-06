@@ -35,6 +35,13 @@ def main():
         print(f"Error: Directory '{target_dir}' does not exist.")
         sys.exit(1)
 
+    # Check if target_dir has timestamped run directories and no direct CSVs
+    run_subdirs = sorted([d for d in target_dir.glob("run_*") if d.is_dir()], key=lambda p: p.stat().st_mtime, reverse=True)
+    has_direct_csvs = (target_dir / "fusion_agentic_predictions.csv").is_file() or (target_dir / "macro_predictions.csv").is_file()
+    if not has_direct_csvs and run_subdirs:
+        print(f"Target directory contains run directories. Using latest run: {run_subdirs[0].name}")
+        target_dir = run_subdirs[0]
+
     analysis_dir = target_dir / "Analysis"
     analysis_dir.mkdir(parents=True, exist_ok=True)
 

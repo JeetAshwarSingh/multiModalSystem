@@ -53,6 +53,27 @@ class MERBlock:
         else:
             self.mp_face_mesh = None
 
+        self.classifier = None
+        self.scaler = None
+        candidates = [
+            os.path.abspath("weights/mer/classifier.pkl"),
+            os.path.abspath("../weights/mer/classifier.pkl"),
+        ]
+        for p in candidates:
+            if os.path.isfile(p):
+                try:
+                    import joblib
+                    data = joblib.load(p)
+                    if isinstance(data, dict):
+                        self.classifier = data.get("model")
+                        self.scaler = data.get("scaler")
+                    else:
+                        self.classifier = data
+                    print(f"Loaded trained MER classifier from {p}")
+                    break
+                except Exception as e:
+                    print(f"Warning: Failed to load MER classifier from {p}: {e}")
+
     @staticmethod
     def _clip_id_from_path(path: str) -> str:
         return hashlib.sha256(os.path.abspath(path).encode()).hexdigest()[:16]
@@ -85,6 +106,7 @@ class MERBlock:
 
     def run(self, clip_path: str) -> Dict[str, Any]:
         if not os.path.isfile(clip_path):
+            print(f"[MERBlock Warning] Video file not found: {clip_path}")
             return {"clip_id": None, "modality": "mer", "status": f"File not found: {clip_path}"}
         try:
             cap = cv2.VideoCapture(clip_path)
@@ -153,14 +175,25 @@ class MERBlock:
             }
 
             # Micro-expression engagement estimation (4 classes: 0=Very Low, 1=Low, 2=Engaged, 3=High)
-            flow_energy = float(np.mean(feature_vec)) if len(feature_vec) > 0 else 0.0
-            motion_metric = (flow_noise * 2.0 + flow_energy * 5.0)
-            p0 = np.exp(-0.5 * (motion_metric - 0.1)**2)
-            p1 = np.exp(-0.5 * (motion_metric - 0.3)**2)
-            p2 = np.exp(-0.5 * (motion_metric - 0.6)**2) * 1.5
-            p3 = np.exp(-0.5 * (motion_metric - 1.1)**2) * 1.5
-            eng_probs = np.array([p0, p1, p2, p3], dtype=np.float32)
-            eng_probs = eng_probs / np.sum(eng_probs)
+            if self.classifier is not None:
+                comb_feat = np.concatenate([
+                    feature_vec,
+                    [quality["flow_noise"], quality["track_stability"], quality["blur_estimate"], quality["framerate_factor"]]
+                ]).reshape(1, -1)
+                if self.scaler is not None:
+                    comb_feat = self.scaler.transform(comb_feat)
+                eng_probs = self.classifier.predict_proba(comb_feat)[0].astype(np.float32)
+            else:
+                flow_energy = float(np.mean(feature_vec)) if len(feature_vec) > 0 else 0.0
+                motion_metric = (flow_noise * 2.0 + flow_energy * 5.0)
+                logits = np.array([
+                    -0.5 * (motion_metric - 0.1) ** 2,
+                    -0.5 * (motion_metric - 0.3) ** 2,
+                    -0.5 * (motion_metric - 0.6) ** 2,
+                    -0.5 * (motion_metric - 1.1) ** 2,
+                ], dtype=np.float64)
+                exp_l = np.exp(logits - np.max(logits))
+                eng_probs = (exp_l / np.sum(exp_l)).astype(np.float32)
 
             return {
                 "clip_id": self._clip_id_from_path(clip_path),

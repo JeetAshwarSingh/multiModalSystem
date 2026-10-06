@@ -36,6 +36,22 @@ class AgenticFusion:
         self.base_weights = {"macro": 0.5, "rppg": 0.3, "mer": 0.2}
         self.history = collections.deque(maxlen=self.smoothing_window)
 
+    def _is_degenerate(self, prob: np.ndarray) -> bool:
+        """Detect if a modality output is degenerate/constant/all-zeros."""
+        if prob is None or len(prob) == 0:
+            return True
+        sum_p = np.sum(prob)
+        if sum_p <= 0:
+            return True
+        p_norm = prob / sum_p
+        # Shannon entropy
+        entropy = -float(np.sum(p_norm * np.log(p_norm + 1e-12)))
+        max_entropy = np.log(len(p_norm))
+        # If entropy is extremely low (< 15% of uniform distribution), predictions collapsed
+        if entropy < 0.15 * max_entropy:
+            return True
+        return False
+
     def _extract_prob(self, pred: Any) -> np.ndarray:
         if isinstance(pred, dict):
             if "engagement" in pred:
@@ -56,9 +72,17 @@ class AgenticFusion:
         weights = dict(self.base_weights)
         explanations = []
 
+        # Validate prediction quality and detect degenerate modalities
+        for mod in ["macro", "rppg", "mer"]:
+            if mod in preds and preds[mod] is not None:
+                prob = self._extract_prob(preds[mod])
+                if self._is_degenerate(prob):
+                    weights[mod] = 0.0
+                    explanations.append(f"{mod} predictions degenerate/constant -> weight set to 0")
+
         # Modality Monitor & Reasoning Engine
         # Macro check
-        if availability.get("macro", "macro" in preds):
+        if availability.get("macro", "macro" in preds) and weights.get("macro", 0.0) > 0:
             blur = quality.get("macro", {}).get("blur", 100.0)
             if blur >= self.thresholds.get("macro_blur", 100.0):
                 weights["macro"] = min(self.max_weight, weights["macro"] + self.adj.get("increase", 0.2))
@@ -70,9 +94,15 @@ class AgenticFusion:
             weights["macro"] = 0.0
 
         # rPPG check
-        if availability.get("rppg", "rppg" in preds):
-            snr = quality.get("rppg", {}).get("snr", 10.0)
-            if snr >= self.thresholds.get("rppg_snr", 5.0):
+        if availability.get("rppg", "rppg" in preds) and weights.get("rppg", 0.0) > 0:
+            r_qual = quality.get("rppg", {})
+            snr = float(r_qual.get("snr", 10.0))
+            prom = float(r_qual.get("peak_prominence", 0.0))
+            # Detect suspicious dummy placeholder metrics
+            if snr == 10.0 and prom == 0.8:
+                weights["rppg"] = self.min_weight
+                explanations.append("rPPG quality metrics appear to be placeholder values -> minimal weight")
+            elif snr >= self.thresholds.get("rppg_snr", 5.0):
                 weights["rppg"] = min(self.max_weight, weights["rppg"] + self.adj.get("increase", 0.2))
                 explanations.append(f"rPPG SNR ({snr:.1f}dB) high -> increased weight to {weights['rppg']:.2f}")
             else:
@@ -82,8 +112,8 @@ class AgenticFusion:
             weights["rppg"] = 0.0
 
         # MER check
-        if availability.get("mer", "mer" in preds):
-            flow_noise = quality.get("mer", {}).get("flow_noise", 0.1)
+        if availability.get("mer", "mer" in preds) and weights.get("mer", 0.0) > 0:
+            flow_noise = float(quality.get("mer", {}).get("flow_noise", 0.1))
             if flow_noise <= self.thresholds.get("mer_flow_noise", 0.2):
                 weights["mer"] = min(self.max_weight, weights["mer"] + self.adj.get("increase", 0.2))
                 explanations.append(f"MER flow noise ({flow_noise:.2f}) low -> increased weight to {weights['mer']:.2f}")

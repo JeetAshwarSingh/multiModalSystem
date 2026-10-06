@@ -20,6 +20,11 @@ def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Overall accuracy (fraction of correctly predicted samples)."""
     return accuracy_score(_to_numpy(y_true), _to_numpy(y_pred))
 
+def balanced_accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    """Balanced accuracy (average recall across classes, robust to imbalance)."""
+    from sklearn.metrics import balanced_accuracy_score
+    return float(balanced_accuracy_score(_to_numpy(y_true), _to_numpy(y_pred)))
+
 def macro_f1(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Macro‑averaged F1 across all classes."""
     return f1_score(_to_numpy(y_true), _to_numpy(y_pred), average="macro", zero_division=0)
