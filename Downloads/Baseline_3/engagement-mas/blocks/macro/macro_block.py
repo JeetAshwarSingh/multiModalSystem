@@ -347,8 +347,8 @@ class MacroBlock(nn.Module):
                     elif emb.ndim == 3:
                         emb = emb[:, 0]
                     emb = emb.reshape(-1)
-                    appearance_feats.append(emb.cpu())
-                appearance_feats = torch.stack(appearance_feats)  # (T, C)
+                    appearance_feats.append(emb)
+                appearance_feats = torch.stack(appearance_feats).to(self.device)  # (T, C)
             # Behavioral tensor
             behav_tensor = torch.tensor(np.stack(behav_feats), dtype=torch.float32).to(self.device)  # (T, 30)
             behav_proj = self.behavior_proj(behav_tensor)  # (T, 64)
@@ -389,6 +389,7 @@ class MacroBlock(nn.Module):
                 "status": "success",
             }
         except Exception as e:
+            print(f"[MacroBlock Error] Failed processing {clip_path}: {e}")
             return {"clip_id": self._clip_id_from_path(clip_path), "modality": "macro", "status": str(e)}
 
     def _positional_encoding(self, seq_len: int, dim: int) -> torch.Tensor:
