@@ -55,10 +55,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train Early Fusion Head")
     parser.add_argument("--csv", type=str, default="train.csv", help="Training CSV path")
     parser.add_argument("--root-dir", type=str, default=None, help="DAiSEE root dir (auto-detected if omitted)")
-    parser.add_argument("--max-clips", type=int, default=100, help="Max clips to extract multimodal features from")
+    parser.add_argument("--max-clips", type=int, default=None, help="Max clips to extract multimodal features from (default: all clips)")
     parser.add_argument("--epochs", type=int, default=20, help="Training epochs")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
     parser.add_argument("--output", type=str, default="weights/fusion/early_fusion.pt", help="Output path for weights")
+    parser.add_argument("--device", type=str, default="auto", help="Compute device for vision backbone: auto, cuda, or cpu")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     return parser.parse_args()
 
@@ -126,7 +127,7 @@ def main():
     clip_paths, labels = load_dataset(csv_path, root_dir)
 
     df = pd.DataFrame({"path": clip_paths, "label": labels[:, 0]})
-    if args.max_clips is not None and args.max_clips < len(df):
+    if args.max_clips is not None and args.max_clips > 0 and args.max_clips < len(df):
         sampled = []
         n_per_class = max(1, args.max_clips // 4)
         for c in range(4):
@@ -136,7 +137,7 @@ def main():
         df = pd.concat(sampled).sample(frac=1, random_state=args.seed).reset_index(drop=True)
         print(f"Sampled {len(df)} clips across classes: {df['label'].value_counts().to_dict()}")
 
-    macro = MacroBlock(device="cpu")
+    macro = MacroBlock(device=args.device)
     rppg = RPPGBlock(seed=args.seed)
     mer = MERBlock(seed=args.seed)
 
@@ -170,23 +171,25 @@ def main():
     for c in range(4):
         cnt = max(1, class_counts[c])
         weights.append(total_samples / (4.0 * cnt))
-    class_weights = torch.tensor(weights, dtype=torch.float32)
-    print(f"Computed inverse frequency class weights: {weights}")
+    dev = torch.device(args.device if args.device != "auto" else ("cuda" if torch.cuda.is_available() else "cpu"))
+    class_weights = torch.tensor(weights, dtype=torch.float32).to(dev)
+    print(f"Computed inverse frequency class weights: {weights} on device {dev}")
 
     dataset = TensorDataset(torch.from_numpy(X_arr), torch.from_numpy(y_arr))
     loader = DataLoader(dataset, batch_size=8, shuffle=True)
 
-    model = TrainableEarlyFusion(input_dim=total_dim, hidden_dim=256, num_classes=4)
+    model = TrainableEarlyFusion(input_dim=total_dim, hidden_dim=256, num_classes=4).to(dev)
     criterion = nn.CrossEntropyLoss(weight=class_weights)
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
 
-    print(f"Training Early Fusion model for {args.epochs} epochs...")
+    print(f"Training Early Fusion model for {args.epochs} epochs on {dev}...")
     model.train()
     for epoch in range(args.epochs):
         epoch_loss = 0.0
         correct = 0
         total = 0
         for batch_x, batch_y in loader:
+            batch_x, batch_y = batch_x.to(dev), batch_y.to(dev)
             optimizer.zero_grad()
             logits = model(batch_x)
             loss = criterion(logits, batch_y)

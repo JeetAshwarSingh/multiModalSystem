@@ -25,7 +25,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train MER Engagement Classifier")
     parser.add_argument("--csv", type=str, default="train.csv", help="Training CSV path")
     parser.add_argument("--root-dir", type=str, default=None, help="DAiSEE root dir (auto-detected if omitted)")
-    parser.add_argument("--max-clips", type=int, default=100, help="Max clips to extract features for training")
+    parser.add_argument("--max-clips", type=int, default=None, help="Max clips to extract for training (default: all clips)")
     parser.add_argument("--output", type=str, default="weights/mer/classifier.pkl", help="Output path for trained model")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     return parser.parse_args()
@@ -94,7 +94,7 @@ def main():
     clip_paths, labels = load_dataset(csv_path, root_dir)
 
     df = pd.DataFrame({"path": clip_paths, "label": labels[:, 0]})
-    if args.max_clips is not None and args.max_clips < len(df):
+    if args.max_clips is not None and args.max_clips > 0 and args.max_clips < len(df):
         sampled = []
         n_per_class = max(1, args.max_clips // 4)
         for c in range(4):
