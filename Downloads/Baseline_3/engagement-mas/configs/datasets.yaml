@@ -1,6 +1,6 @@
 datasets:
   daisee:
-    root_dir: "/Users/jeetashwar/Downloads/DAiSEE"
+    root_dir: "C:\\Users\\puneet\\Downloads\\DAiSEE"
     train_csv: "../train.csv"
     val_csv: "../val.csv"
     test_csv: "../test.csv"
