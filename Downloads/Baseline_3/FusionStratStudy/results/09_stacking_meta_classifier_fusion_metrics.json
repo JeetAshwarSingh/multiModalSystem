@@ -1,0 +1,65 @@
+{
+  "accuracy": 0.42937219730941706,
+  "balanced_accuracy": 0.3040136611565183,
+  "macro_f1": 0.19666500597248712,
+  "weighted_f1": 0.3363292584391622,
+  "macro_precision": 0.27562420006361216,
+  "macro_recall": 0.3040136611565183,
+  "confusion_matrix": [
+    [
+      1,
+      0,
+      1,
+      2
+    ],
+    [
+      14,
+      3,
+      4,
+      63
+    ],
+    [
+      36,
+      23,
+      61,
+      762
+    ],
+    [
+      51,
+      21,
+      41,
+      701
+    ]
+  ],
+  "per_class": {
+    "Class_0": {
+      "label": "Very Low Engagement (0)",
+      "precision": 0.00980392156862745,
+      "recall": 0.25,
+      "f1": 0.018867924528301886,
+      "support": 4
+    },
+    "Class_1": {
+      "label": "Low Engagement (1)",
+      "precision": 0.06382978723404255,
+      "recall": 0.03571428571428571,
+      "f1": 0.04580152671755725,
+      "support": 84
+    },
+    "Class_2": {
+      "label": "Engaged (2)",
+      "precision": 0.5700934579439252,
+      "recall": 0.0691609977324263,
+      "f1": 0.12335692618806875,
+      "support": 882
+    },
+    "Class_3": {
+      "label": "Highly Engaged (3)",
+      "precision": 0.4587696335078534,
+      "recall": 0.8611793611793612,
+      "f1": 0.5986336464560206,
+      "support": 814
+    }
+  },
+  "total_samples": 1784
+}
